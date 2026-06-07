@@ -205,6 +205,7 @@ export enum ProviderType {
     Kimi = 'kimi',
     Ollama = 'ollama',
     Openai = 'openai',
+    Openrouter = 'openrouter',
     Qwen = 'qwen',
 }
 
@@ -703,6 +704,7 @@ export type SettingsProvidersQuery = {
             glm: boolean;
             kimi: boolean;
             qwen: boolean;
+            openrouter: boolean;
         };
         default: {
             openai: ProviderConfigFragmentFragment;
@@ -715,6 +717,7 @@ export type SettingsProvidersQuery = {
             glm: ProviderConfigFragmentFragment | null;
             kimi: ProviderConfigFragmentFragment | null;
             qwen: ProviderConfigFragmentFragment | null;
+            openrouter: ProviderConfigFragmentFragment | null;
         };
         userDefined: Array<ProviderConfigFragmentFragment> | null;
         models: {
@@ -728,6 +731,7 @@ export type SettingsProvidersQuery = {
             glm: Array<ModelConfigFragmentFragment> | null;
             kimi: Array<ModelConfigFragmentFragment> | null;
             qwen: Array<ModelConfigFragmentFragment> | null;
+            openrouter: Array<ModelConfigFragmentFragment> | null;
         };
     };
 };
@@ -2146,6 +2150,7 @@ export const SettingsProvidersDocument = gql`
                 glm
                 kimi
                 qwen
+                openrouter
             }
             default {
                 openai {
@@ -2176,6 +2181,9 @@ export const SettingsProvidersDocument = gql`
                     ...providerConfigFragment
                 }
                 qwen {
+                    ...providerConfigFragment
+                }
+                openrouter {
                     ...providerConfigFragment
                 }
             }
@@ -2211,6 +2219,9 @@ export const SettingsProvidersDocument = gql`
                     ...modelConfigFragment
                 }
                 qwen {
+                    ...modelConfigFragment
+                }
+                openrouter {
                     ...modelConfigFragment
                 }
             }

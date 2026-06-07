@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from '@/components/ui/breadcrumb';
@@ -19,6 +19,8 @@ function NewFlow() {
     const { settings } = useSystemSettings();
 
     const [isLoading, setIsLoading] = useState(false);
+    const [creationElapsed, setCreationElapsed] = useState(0);
+    const [submittedProvider, setSubmittedProvider] = useState('');
     const [flowType, setFlowType] = useState<'assistant' | 'automation'>('automation');
 
     const shouldUseAgents = useMemo(() => {
@@ -30,6 +32,8 @@ function NewFlow() {
             return;
         }
 
+        setCreationElapsed(0);
+        setSubmittedProvider(values.providerName.trim());
         setIsLoading(true);
 
         try {
@@ -40,8 +44,45 @@ function NewFlow() {
             }
         } finally {
             setIsLoading(false);
+            setCreationElapsed(0);
+            setSubmittedProvider('');
         }
     };
+
+    useEffect(() => {
+        if (!isLoading) {
+            return;
+        }
+
+        const intervalId = window.setInterval(() => {
+            setCreationElapsed((current) => current + 1);
+        }, 1000);
+
+        return () => window.clearInterval(intervalId);
+    }, [isLoading]);
+
+    const creationStatusMessage = useMemo(() => {
+        if (!isLoading) {
+            return '';
+        }
+
+        const providerName = submittedProvider || selectedProvider?.name || 'provider';
+        const providerLabel = providerName.charAt(0).toUpperCase() + providerName.slice(1);
+
+        if (creationElapsed < 4) {
+            return 'Creating the flow record...';
+        }
+
+        if (creationElapsed < 15) {
+            return `Contacting ${providerLabel} to prepare the flow...`;
+        }
+
+        if (creationElapsed < 35) {
+            return `Waiting for ${providerLabel}; the provider may be busy or rate-limiting requests...`;
+        }
+
+        return `Still waiting for ${providerLabel}. PentAGI will continue retrying if the provider returns rate limits.`;
+    }, [creationElapsed, isLoading, selectedProvider?.name, submittedProvider]);
 
     return (
         <>
@@ -99,6 +140,7 @@ function NewFlow() {
                                         : 'What would you like me to help you with?'
                                     : 'Creating a new flow...'
                             }
+                            statusMessage={creationStatusMessage}
                             type={flowType}
                         />
                     </CardContent>

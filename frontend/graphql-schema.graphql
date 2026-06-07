@@ -554,6 +554,7 @@ query settingsProviders {
             glm
             kimi
             qwen
+            openrouter
         }
         default {
             openai {
@@ -584,6 +585,9 @@ query settingsProviders {
                 ...providerConfigFragment
             }
             qwen {
+                ...providerConfigFragment
+            }
+            openrouter {
                 ...providerConfigFragment
             }
         }
@@ -619,6 +623,9 @@ query settingsProviders {
                 ...modelConfigFragment
             }
             qwen {
+                ...modelConfigFragment
+            }
+            openrouter {
                 ...modelConfigFragment
             }
         }

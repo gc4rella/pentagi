@@ -1,0 +1,71 @@
+- name: openrouter/free
+  description: OpenRouter's free-model router. It randomly selects from currently available free models and filters for requested capabilities such as tool calling or structured outputs.
+  thinking: false
+  release_date: 2026-06-07
+  price:
+    input: 0
+    output: 0
+
+- name: nvidia/nemotron-3-super-120b-a12b:free
+  description: Free NVIDIA Nemotron 3 Super model on OpenRouter. Large-context reasoning model that advertises tool calling, structured outputs, and response formatting.
+  thinking: true
+  release_date: 2026-04-28
+  price:
+    input: 0
+    output: 0
+
+- name: nvidia/nemotron-3-ultra-550b-a55b:free
+  description: Free NVIDIA Nemotron 3 Ultra model on OpenRouter. Frontier-scale orchestration model with very large context and tool-calling support.
+  thinking: true
+  release_date: 2026-06-04
+  price:
+    input: 0
+    output: 0
+
+- name: qwen/qwen3-coder:free
+  description: Free Qwen3 Coder model on OpenRouter. Coding-oriented model with a large context window and tool-calling support.
+  thinking: false
+  release_date: 2025-07-22
+  price:
+    input: 0
+    output: 0
+
+- name: qwen/qwen3-next-80b-a3b-instruct:free
+  description: Free Qwen3 Next instruct model on OpenRouter. General-purpose instruction model that advertises tool calling, structured outputs, and response formatting.
+  thinking: false
+  release_date: 2025-09-11
+  price:
+    input: 0
+    output: 0
+
+- name: google/gemma-4-26b-a4b-it:free
+  description: Free Google Gemma 4 instruction model on OpenRouter. Useful for utility, search, enrichment, and JSON-oriented agents with tool support.
+  thinking: true
+  release_date: 2026-01-20
+  price:
+    input: 0
+    output: 0
+
+- name: openai/gpt-oss-120b:free
+  description: Free OpenAI open-weight model on OpenRouter. Reasoning-capable model with tool-calling support.
+  thinking: true
+  release_date: 2025-08-05
+  price:
+    input: 0
+    output: 0
+
+- name: moonshotai/kimi-k2.6:free
+  description: Free Kimi K2.6 model on OpenRouter. Large-context model with reasoning and tool-calling support.
+  thinking: true
+  release_date: 2026-01-26
+  price:
+    input: 0
+    output: 0
+
+- name: z-ai/glm-4.5-air:free
+  description: Free GLM 4.5 Air model on OpenRouter. Reasoning-capable model with tool-calling support.
+  thinking: true
+  release_date: 2025-07-28
+  price:
+    input: 0
+    output: 0

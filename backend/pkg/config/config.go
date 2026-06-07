@@ -135,6 +135,11 @@ type Config struct {
 	QwenServerURL string `env:"QWEN_SERVER_URL" envDefault:"https://dashscope-us.aliyuncs.com/compatible-mode/v1"`
 	QwenProvider  string `env:"QWEN_PROVIDER"`
 
+	// === LLM Provider: OpenRouter ===
+	OpenRouterAPIKey    string `env:"OPENROUTER_API_KEY"`
+	OpenRouterServerURL string `env:"OPENROUTER_SERVER_URL" envDefault:"https://openrouter.ai/api/v1"`
+	OpenRouterProvider  string `env:"OPENROUTER_PROVIDER"`
+
 	// === Search Engine: DuckDuckGo ===
 	DuckDuckGoEnabled    bool   `env:"DUCKDUCKGO_ENABLED" envDefault:"true"`
 	DuckDuckGoRegion     string `env:"DUCKDUCKGO_REGION"`
@@ -322,6 +327,7 @@ func (c *Config) GetSecretPatterns() []patterns.Pattern {
 		{c.GLMAPIKey, "GLM Key"},
 		{c.KimiAPIKey, "Kimi Key"},
 		{c.QwenAPIKey, "Qwen Key"},
+		{c.OpenRouterAPIKey, "OpenRouter Key"},
 		{c.GoogleAPIKey, "Google API Key"},
 		{c.GoogleCXKey, "Google CX Key"},
 		{c.OAuthGoogleClientID, "Google Client ID"},

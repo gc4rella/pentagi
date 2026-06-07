@@ -1,0 +1,129 @@
+# OpenRouter agent configuration.
+#
+# OpenRouter is an OpenAI-compatible gateway. Models are fully-qualified as
+# "<provider>/<model>" to avoid ambiguous routing.
+# Defaults intentionally use currently free OpenRouter models that advertise
+# tool calling support. Free model availability can change; lightweight bootstrap
+# calls use openrouter/free so OpenRouter can route around per-model throttling.
+
+simple:
+  model: openrouter/free
+  temperature: 0.5
+  top_p: 0.8
+  n: 1
+  max_tokens: 8192
+  price:
+    input: 0
+    output: 0
+
+simple_json:
+  model: openrouter/free
+  temperature: 0.3
+  top_p: 0.8
+  n: 1
+  max_tokens: 4096
+  json: true
+  price:
+    input: 0
+    output: 0
+
+primary_agent:
+  model: openrouter/free
+  temperature: 0.7
+  n: 1
+  max_tokens: 16384
+  price:
+    input: 0
+    output: 0
+
+assistant:
+  model: openrouter/free
+  temperature: 0.7
+  n: 1
+  max_tokens: 16384
+  price:
+    input: 0
+    output: 0
+
+generator:
+  model: openrouter/free
+  temperature: 0.7
+  n: 1
+  max_tokens: 32768
+  price:
+    input: 0
+    output: 0
+
+refiner:
+  model: openrouter/free
+  temperature: 0.7
+  n: 1
+  max_tokens: 20480
+  price:
+    input: 0
+    output: 0
+
+adviser:
+  model: openrouter/free
+  temperature: 0.7
+  n: 1
+  max_tokens: 8192
+  price:
+    input: 0
+    output: 0
+
+reflector:
+  model: openrouter/free
+  temperature: 0.7
+  n: 1
+  max_tokens: 4096
+  price:
+    input: 0
+    output: 0
+
+searcher:
+  model: openrouter/free
+  temperature: 0.7
+  top_p: 0.8
+  n: 1
+  max_tokens: 8192
+  price:
+    input: 0
+    output: 0
+
+enricher:
+  model: openrouter/free
+  temperature: 0.7
+  top_p: 0.8
+  n: 1
+  max_tokens: 4096
+  price:
+    input: 0
+    output: 0
+
+coder:
+  model: openrouter/free
+  temperature: 0.5
+  n: 1
+  max_tokens: 20480
+  price:
+    input: 0
+    output: 0
+
+installer:
+  model: openrouter/free
+  temperature: 0.5
+  n: 1
+  max_tokens: 16384
+  price:
+    input: 0
+    output: 0
+
+pentester:
+  model: openrouter/free
+  temperature: 0.7
+  n: 1
+  max_tokens: 8192
+  price:
+    input: 0
+    output: 0

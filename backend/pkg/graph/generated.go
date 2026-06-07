@@ -205,16 +205,17 @@ type ComplexityRoot struct {
 	}
 
 	DefaultProvidersConfig struct {
-		Anthropic func(childComplexity int) int
-		Bedrock   func(childComplexity int) int
-		Custom    func(childComplexity int) int
-		Deepseek  func(childComplexity int) int
-		Gemini    func(childComplexity int) int
-		Glm       func(childComplexity int) int
-		Kimi      func(childComplexity int) int
-		Ollama    func(childComplexity int) int
-		Openai    func(childComplexity int) int
-		Qwen      func(childComplexity int) int
+		Anthropic  func(childComplexity int) int
+		Bedrock    func(childComplexity int) int
+		Custom     func(childComplexity int) int
+		Deepseek   func(childComplexity int) int
+		Gemini     func(childComplexity int) int
+		Glm        func(childComplexity int) int
+		Kimi       func(childComplexity int) int
+		Ollama     func(childComplexity int) int
+		Openai     func(childComplexity int) int
+		Openrouter func(childComplexity int) int
+		Qwen       func(childComplexity int) int
 	}
 
 	Flow struct {
@@ -434,29 +435,31 @@ type ComplexityRoot struct {
 	}
 
 	ProvidersModelsList struct {
-		Anthropic func(childComplexity int) int
-		Bedrock   func(childComplexity int) int
-		Custom    func(childComplexity int) int
-		Deepseek  func(childComplexity int) int
-		Gemini    func(childComplexity int) int
-		Glm       func(childComplexity int) int
-		Kimi      func(childComplexity int) int
-		Ollama    func(childComplexity int) int
-		Openai    func(childComplexity int) int
-		Qwen      func(childComplexity int) int
+		Anthropic  func(childComplexity int) int
+		Bedrock    func(childComplexity int) int
+		Custom     func(childComplexity int) int
+		Deepseek   func(childComplexity int) int
+		Gemini     func(childComplexity int) int
+		Glm        func(childComplexity int) int
+		Kimi       func(childComplexity int) int
+		Ollama     func(childComplexity int) int
+		Openai     func(childComplexity int) int
+		Openrouter func(childComplexity int) int
+		Qwen       func(childComplexity int) int
 	}
 
 	ProvidersReadinessStatus struct {
-		Anthropic func(childComplexity int) int
-		Bedrock   func(childComplexity int) int
-		Custom    func(childComplexity int) int
-		Deepseek  func(childComplexity int) int
-		Gemini    func(childComplexity int) int
-		Glm       func(childComplexity int) int
-		Kimi      func(childComplexity int) int
-		Ollama    func(childComplexity int) int
-		Openai    func(childComplexity int) int
-		Qwen      func(childComplexity int) int
+		Anthropic  func(childComplexity int) int
+		Bedrock    func(childComplexity int) int
+		Custom     func(childComplexity int) int
+		Deepseek   func(childComplexity int) int
+		Gemini     func(childComplexity int) int
+		Glm        func(childComplexity int) int
+		Kimi       func(childComplexity int) int
+		Ollama     func(childComplexity int) int
+		Openai     func(childComplexity int) int
+		Openrouter func(childComplexity int) int
+		Qwen       func(childComplexity int) int
 	}
 
 	Query struct {
@@ -1655,6 +1658,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.DefaultProvidersConfig.Openai(childComplexity), true
+
+	case "DefaultProvidersConfig.openrouter":
+		if e.complexity.DefaultProvidersConfig.Openrouter == nil {
+			break
+		}
+
+		return e.complexity.DefaultProvidersConfig.Openrouter(childComplexity), true
 
 	case "DefaultProvidersConfig.qwen":
 		if e.complexity.DefaultProvidersConfig.Qwen == nil {
@@ -2910,6 +2920,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ProvidersModelsList.Openai(childComplexity), true
 
+	case "ProvidersModelsList.openrouter":
+		if e.complexity.ProvidersModelsList.Openrouter == nil {
+			break
+		}
+
+		return e.complexity.ProvidersModelsList.Openrouter(childComplexity), true
+
 	case "ProvidersModelsList.qwen":
 		if e.complexity.ProvidersModelsList.Qwen == nil {
 			break
@@ -2979,6 +2996,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.ProvidersReadinessStatus.Openai(childComplexity), true
+
+	case "ProvidersReadinessStatus.openrouter":
+		if e.complexity.ProvidersReadinessStatus.Openrouter == nil {
+			break
+		}
+
+		return e.complexity.ProvidersReadinessStatus.Openrouter(childComplexity), true
 
 	case "ProvidersReadinessStatus.qwen":
 		if e.complexity.ProvidersReadinessStatus.Qwen == nil {
@@ -13995,6 +14019,61 @@ func (ec *executionContext) fieldContext_DefaultProvidersConfig_qwen(_ context.C
 	return fc, nil
 }
 
+func (ec *executionContext) _DefaultProvidersConfig_openrouter(ctx context.Context, field graphql.CollectedField, obj *model.DefaultProvidersConfig) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DefaultProvidersConfig_openrouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Openrouter, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*model.ProviderConfig)
+	fc.Result = res
+	return ec.marshalOProviderConfig2ᚖpentagiᚋpkgᚋgraphᚋmodelᚐProviderConfig(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DefaultProvidersConfig_openrouter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DefaultProvidersConfig",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_ProviderConfig_id(ctx, field)
+			case "name":
+				return ec.fieldContext_ProviderConfig_name(ctx, field)
+			case "type":
+				return ec.fieldContext_ProviderConfig_type(ctx, field)
+			case "agents":
+				return ec.fieldContext_ProviderConfig_agents(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_ProviderConfig_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_ProviderConfig_updatedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ProviderConfig", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Flow_id(ctx context.Context, field graphql.CollectedField, obj *model.Flow) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Flow_id(ctx, field)
 	if err != nil {
@@ -21145,6 +21224,8 @@ func (ec *executionContext) fieldContext_ProvidersConfig_enabled(_ context.Conte
 				return ec.fieldContext_ProvidersReadinessStatus_kimi(ctx, field)
 			case "qwen":
 				return ec.fieldContext_ProvidersReadinessStatus_qwen(ctx, field)
+			case "openrouter":
+				return ec.fieldContext_ProvidersReadinessStatus_openrouter(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ProvidersReadinessStatus", field.Name)
 		},
@@ -21211,6 +21292,8 @@ func (ec *executionContext) fieldContext_ProvidersConfig_default(_ context.Conte
 				return ec.fieldContext_DefaultProvidersConfig_kimi(ctx, field)
 			case "qwen":
 				return ec.fieldContext_DefaultProvidersConfig_qwen(ctx, field)
+			case "openrouter":
+				return ec.fieldContext_DefaultProvidersConfig_openrouter(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type DefaultProvidersConfig", field.Name)
 		},
@@ -21332,6 +21415,8 @@ func (ec *executionContext) fieldContext_ProvidersConfig_models(_ context.Contex
 				return ec.fieldContext_ProvidersModelsList_kimi(ctx, field)
 			case "qwen":
 				return ec.fieldContext_ProvidersModelsList_qwen(ctx, field)
+			case "openrouter":
+				return ec.fieldContext_ProvidersModelsList_openrouter(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ProvidersModelsList", field.Name)
 		},
@@ -21878,6 +21963,59 @@ func (ec *executionContext) fieldContext_ProvidersModelsList_qwen(_ context.Cont
 	return fc, nil
 }
 
+func (ec *executionContext) _ProvidersModelsList_openrouter(ctx context.Context, field graphql.CollectedField, obj *model.ProvidersModelsList) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProvidersModelsList_openrouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Openrouter, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.ModelConfig)
+	fc.Result = res
+	return ec.marshalOModelConfig2ᚕᚖpentagiᚋpkgᚋgraphᚋmodelᚐModelConfigᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProvidersModelsList_openrouter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProvidersModelsList",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "name":
+				return ec.fieldContext_ModelConfig_name(ctx, field)
+			case "description":
+				return ec.fieldContext_ModelConfig_description(ctx, field)
+			case "releaseDate":
+				return ec.fieldContext_ModelConfig_releaseDate(ctx, field)
+			case "thinking":
+				return ec.fieldContext_ModelConfig_thinking(ctx, field)
+			case "price":
+				return ec.fieldContext_ModelConfig_price(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ModelConfig", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _ProvidersReadinessStatus_openai(ctx context.Context, field graphql.CollectedField, obj *model.ProvidersReadinessStatus) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProvidersReadinessStatus_openai(ctx, field)
 	if err != nil {
@@ -22306,6 +22444,50 @@ func (ec *executionContext) _ProvidersReadinessStatus_qwen(ctx context.Context, 
 }
 
 func (ec *executionContext) fieldContext_ProvidersReadinessStatus_qwen(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProvidersReadinessStatus",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProvidersReadinessStatus_openrouter(ctx context.Context, field graphql.CollectedField, obj *model.ProvidersReadinessStatus) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProvidersReadinessStatus_openrouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Openrouter, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProvidersReadinessStatus_openrouter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ProvidersReadinessStatus",
 		Field:      field,
@@ -37642,6 +37824,8 @@ func (ec *executionContext) _DefaultProvidersConfig(ctx context.Context, sel ast
 			out.Values[i] = ec._DefaultProvidersConfig_kimi(ctx, field, obj)
 		case "qwen":
 			out.Values[i] = ec._DefaultProvidersConfig_qwen(ctx, field, obj)
+		case "openrouter":
+			out.Values[i] = ec._DefaultProvidersConfig_openrouter(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -39229,6 +39413,8 @@ func (ec *executionContext) _ProvidersModelsList(ctx context.Context, sel ast.Se
 			out.Values[i] = ec._ProvidersModelsList_kimi(ctx, field, obj)
 		case "qwen":
 			out.Values[i] = ec._ProvidersModelsList_qwen(ctx, field, obj)
+		case "openrouter":
+			out.Values[i] = ec._ProvidersModelsList_openrouter(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -39310,6 +39496,11 @@ func (ec *executionContext) _ProvidersReadinessStatus(ctx context.Context, sel a
 			}
 		case "qwen":
 			out.Values[i] = ec._ProvidersReadinessStatus_qwen(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "openrouter":
+			out.Values[i] = ec._ProvidersReadinessStatus_openrouter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}

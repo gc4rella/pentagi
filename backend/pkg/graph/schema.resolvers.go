@@ -22,6 +22,7 @@ import (
 	"pentagi/pkg/providers/glm"
 	"pentagi/pkg/providers/kimi"
 	"pentagi/pkg/providers/openai"
+	"pentagi/pkg/providers/openrouter"
 	"pentagi/pkg/providers/pconfig"
 	"pentagi/pkg/providers/provider"
 	"pentagi/pkg/providers/qwen"
@@ -2082,6 +2083,11 @@ func (r *queryResolver) SettingsProviders(ctx context.Context) (*model.Providers
 			if models, err := qwen.DefaultModels(); err == nil {
 				config.Models.Qwen = converter.ConvertModels(models)
 			}
+		case provider.ProviderOpenRouter:
+			config.Default.Openrouter = mpcfg
+			if models, err := openrouter.DefaultModels(); err == nil {
+				config.Models.Openrouter = converter.ConvertModels(models)
+			}
 		}
 	}
 
@@ -2114,6 +2120,8 @@ func (r *queryResolver) SettingsProviders(ctx context.Context) (*model.Providers
 			config.Enabled.Kimi = true
 		case provider.ProviderQwen:
 			config.Enabled.Qwen = true
+		case provider.ProviderOpenRouter:
+			config.Enabled.Openrouter = true
 		}
 	}
 

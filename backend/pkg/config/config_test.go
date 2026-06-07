@@ -118,6 +118,12 @@ func TestGetSecretPatterns_PatternCompilation(t *testing.T) {
 			},
 		},
 		{
+			name: "OpenRouter",
+			config: &Config{
+				OpenRouterAPIKey: "sk-or-v1-1234567890abcdefghijklmnopqrstuvwxyz",
+			},
+		},
+		{
 			name: "Tavily",
 			config: &Config{
 				TavilyAPIKey: "tvly-1234567890abcdefghijklmnopqrstuvwxyz",
@@ -224,6 +230,7 @@ func TestGetSecretPatterns_AllFields(t *testing.T) {
 		GLMAPIKey:               "glm-123",
 		KimiAPIKey:              "kimi-123",
 		QwenAPIKey:              "qwen-123",
+		OpenRouterAPIKey:        "openrouter-123",
 		GoogleAPIKey:            "AIza123",
 		GoogleCXKey:             "cx-123",
 		OAuthGoogleClientID:     "google-client-id",
@@ -240,7 +247,7 @@ func TestGetSecretPatterns_AllFields(t *testing.T) {
 
 	patterns := cfg.GetSecretPatterns()
 
-	expectedCount := 29
+	expectedCount := 30
 	if len(patterns) != expectedCount {
 		t.Errorf("expected %d patterns, got %d", expectedCount, len(patterns))
 	}
@@ -294,6 +301,7 @@ func clearConfigEnv(t *testing.T) {
 		"GLM_API_KEY", "GLM_SERVER_URL", "GLM_PROVIDER",
 		"KIMI_API_KEY", "KIMI_SERVER_URL", "KIMI_PROVIDER",
 		"QWEN_API_KEY", "QWEN_SERVER_URL", "QWEN_PROVIDER",
+		"OPENROUTER_API_KEY", "OPENROUTER_SERVER_URL", "OPENROUTER_PROVIDER",
 		"DUCKDUCKGO_ENABLED", "DUCKDUCKGO_REGION", "DUCKDUCKGO_SAFESEARCH", "DUCKDUCKGO_TIME_RANGE",
 		"SPLOITUS_ENABLED",
 		"GOOGLE_API_KEY", "GOOGLE_CX_KEY", "GOOGLE_LR_KEY",
@@ -372,6 +380,7 @@ func TestNewConfig_ProviderDefaults(t *testing.T) {
 	assert.Equal(t, "https://api.z.ai/api/paas/v4", config.GLMServerURL)
 	assert.Equal(t, "https://api.moonshot.ai/v1", config.KimiServerURL)
 	assert.Equal(t, "https://dashscope-us.aliyuncs.com/compatible-mode/v1", config.QwenServerURL)
+	assert.Equal(t, "https://openrouter.ai/api/v1", config.OpenRouterServerURL)
 }
 
 func TestNewConfig_StaticURL(t *testing.T) {

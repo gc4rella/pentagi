@@ -29,6 +29,7 @@ import (
 	"pentagi/pkg/providers/kimi"
 	"pentagi/pkg/providers/ollama"
 	"pentagi/pkg/providers/openai"
+	"pentagi/pkg/providers/openrouter"
 	"pentagi/pkg/providers/pconfig"
 	"pentagi/pkg/providers/provider"
 	"pentagi/pkg/providers/qwen"
@@ -235,6 +236,12 @@ func NewProviderController(
 		defaultConfigs[provider.ProviderQwen] = config
 	}
 
+	if config, err := openrouter.DefaultProviderConfig(); err != nil {
+		return nil, fmt.Errorf("failed to create openrouter provider config: %w", err)
+	} else {
+		defaultConfigs[provider.ProviderOpenRouter] = config
+	}
+
 	if cfg.OpenAIKey != "" {
 		p, err := openai.New(cfg, provider.DefaultProviderNameOpenAI, defaultConfigs[provider.ProviderOpenAI])
 		if err != nil {
@@ -326,6 +333,15 @@ func NewProviderController(
 		}
 
 		providers[provider.DefaultProviderNameQwen] = p
+	}
+
+	if cfg.OpenRouterAPIKey != "" {
+		p, err := openrouter.New(cfg, provider.DefaultProviderNameOpenRouter, defaultConfigs[provider.ProviderOpenRouter])
+		if err != nil {
+			return nil, fmt.Errorf("failed to create openrouter provider: %w", err)
+		}
+
+		providers[provider.DefaultProviderNameOpenRouter] = p
 	}
 
 	summarizerAgent := csum.NewSummarizer(csum.SummarizerConfig{
@@ -734,6 +750,8 @@ func (pc *providerController) GetProvider(
 		return pc.Providers.Get(provider.DefaultProviderNameKimi)
 	case provider.DefaultProviderNameQwen:
 		return pc.Providers.Get(provider.DefaultProviderNameQwen)
+	case provider.DefaultProviderNameOpenRouter:
+		return pc.Providers.Get(provider.DefaultProviderNameOpenRouter)
 	}
 
 	return nil, fmt.Errorf("provider '%s' not found", prvname)
@@ -840,6 +858,12 @@ func (pc *providerController) NewProvider(prv database.Provider) (provider.Provi
 			return nil, fmt.Errorf("failed to build qwen provider config: %w", err)
 		}
 		return qwen.New(pc.cfg, providerName, qwenConfig)
+	case provider.ProviderOpenRouter:
+		openrouterConfig, err := openrouter.BuildProviderConfig(prv.Config)
+		if err != nil {
+			return nil, fmt.Errorf("failed to build openrouter provider config: %w", err)
+		}
+		return openrouter.New(pc.cfg, providerName, openrouterConfig)
 	default:
 		return nil, fmt.Errorf("unknown provider type: %s", prv.Type)
 	}
@@ -1178,6 +1202,8 @@ func (pc *providerController) buildProviderFromConfig(
 		return kimi.New(pc.cfg, prvname, config)
 	case provider.ProviderQwen:
 		return qwen.New(pc.cfg, prvname, config)
+	case provider.ProviderOpenRouter:
+		return openrouter.New(pc.cfg, prvname, config)
 	default:
 		return nil, fmt.Errorf("unknown provider type: %s", prvtype)
 	}

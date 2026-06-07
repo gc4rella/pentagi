@@ -21,6 +21,7 @@ enum ProviderType {
   glm
   kimi
   qwen
+  openrouter
 }
 
 # Reasoning effort levels for advanced AI models (OpenAI format)
@@ -701,6 +702,7 @@ type ProvidersModelsList {
   glm: [ModelConfig!]
   kimi: [ModelConfig!]
   qwen: [ModelConfig!]
+  openrouter: [ModelConfig!]
 }
 
 # Provider availability status
@@ -715,6 +717,7 @@ type ProvidersReadinessStatus {
   glm: Boolean!
   kimi: Boolean!
   qwen: Boolean!
+  openrouter: Boolean!
 }
 
 # Default provider configurations
@@ -729,6 +732,7 @@ type DefaultProvidersConfig {
   glm: ProviderConfig
   kimi: ProviderConfig
   qwen: ProviderConfig
+  openrouter: ProviderConfig
 }
 
 # Complete providers configuration

@@ -65,6 +65,7 @@ export interface FlowFormProps {
     onCancel?: () => Promise<void> | void;
     onSubmit: (values: FlowFormValues) => Promise<void> | void;
     placeholder?: string;
+    statusMessage?: string;
     type: 'assistant' | 'automation';
 }
 
@@ -80,6 +81,7 @@ export function FlowForm({
     onCancel,
     onSubmit,
     placeholder = 'Describe what you would like PentAGI to test...',
+    statusMessage,
     type,
 }: FlowFormProps) {
     const { providers, setSelectedProvider } = useProviders();
@@ -789,6 +791,14 @@ export function FlowForm({
                     )}
                 />
             </form>
+            {statusMessage && (
+                <p
+                    aria-live="polite"
+                    className="text-muted-foreground px-1 text-sm"
+                >
+                    {statusMessage}
+                </p>
+            )}
             <input
                 aria-hidden="true"
                 className="hidden"

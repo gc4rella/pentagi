@@ -184,16 +184,17 @@ type DefaultPrompts struct {
 }
 
 type DefaultProvidersConfig struct {
-	Openai    *ProviderConfig `json:"openai"`
-	Anthropic *ProviderConfig `json:"anthropic"`
-	Gemini    *ProviderConfig `json:"gemini,omitempty"`
-	Bedrock   *ProviderConfig `json:"bedrock,omitempty"`
-	Ollama    *ProviderConfig `json:"ollama,omitempty"`
-	Custom    *ProviderConfig `json:"custom,omitempty"`
-	Deepseek  *ProviderConfig `json:"deepseek,omitempty"`
-	Glm       *ProviderConfig `json:"glm,omitempty"`
-	Kimi      *ProviderConfig `json:"kimi,omitempty"`
-	Qwen      *ProviderConfig `json:"qwen,omitempty"`
+	Openai     *ProviderConfig `json:"openai"`
+	Anthropic  *ProviderConfig `json:"anthropic"`
+	Gemini     *ProviderConfig `json:"gemini,omitempty"`
+	Bedrock    *ProviderConfig `json:"bedrock,omitempty"`
+	Ollama     *ProviderConfig `json:"ollama,omitempty"`
+	Custom     *ProviderConfig `json:"custom,omitempty"`
+	Deepseek   *ProviderConfig `json:"deepseek,omitempty"`
+	Glm        *ProviderConfig `json:"glm,omitempty"`
+	Kimi       *ProviderConfig `json:"kimi,omitempty"`
+	Qwen       *ProviderConfig `json:"qwen,omitempty"`
+	Openrouter *ProviderConfig `json:"openrouter,omitempty"`
 }
 
 type Flow struct {
@@ -391,29 +392,31 @@ type ProvidersConfig struct {
 }
 
 type ProvidersModelsList struct {
-	Openai    []*ModelConfig `json:"openai"`
-	Anthropic []*ModelConfig `json:"anthropic"`
-	Gemini    []*ModelConfig `json:"gemini"`
-	Bedrock   []*ModelConfig `json:"bedrock,omitempty"`
-	Ollama    []*ModelConfig `json:"ollama,omitempty"`
-	Custom    []*ModelConfig `json:"custom,omitempty"`
-	Deepseek  []*ModelConfig `json:"deepseek,omitempty"`
-	Glm       []*ModelConfig `json:"glm,omitempty"`
-	Kimi      []*ModelConfig `json:"kimi,omitempty"`
-	Qwen      []*ModelConfig `json:"qwen,omitempty"`
+	Openai     []*ModelConfig `json:"openai"`
+	Anthropic  []*ModelConfig `json:"anthropic"`
+	Gemini     []*ModelConfig `json:"gemini"`
+	Bedrock    []*ModelConfig `json:"bedrock,omitempty"`
+	Ollama     []*ModelConfig `json:"ollama,omitempty"`
+	Custom     []*ModelConfig `json:"custom,omitempty"`
+	Deepseek   []*ModelConfig `json:"deepseek,omitempty"`
+	Glm        []*ModelConfig `json:"glm,omitempty"`
+	Kimi       []*ModelConfig `json:"kimi,omitempty"`
+	Qwen       []*ModelConfig `json:"qwen,omitempty"`
+	Openrouter []*ModelConfig `json:"openrouter,omitempty"`
 }
 
 type ProvidersReadinessStatus struct {
-	Openai    bool `json:"openai"`
-	Anthropic bool `json:"anthropic"`
-	Gemini    bool `json:"gemini"`
-	Bedrock   bool `json:"bedrock"`
-	Ollama    bool `json:"ollama"`
-	Custom    bool `json:"custom"`
-	Deepseek  bool `json:"deepseek"`
-	Glm       bool `json:"glm"`
-	Kimi      bool `json:"kimi"`
-	Qwen      bool `json:"qwen"`
+	Openai     bool `json:"openai"`
+	Anthropic  bool `json:"anthropic"`
+	Gemini     bool `json:"gemini"`
+	Bedrock    bool `json:"bedrock"`
+	Ollama     bool `json:"ollama"`
+	Custom     bool `json:"custom"`
+	Deepseek   bool `json:"deepseek"`
+	Glm        bool `json:"glm"`
+	Kimi       bool `json:"kimi"`
+	Qwen       bool `json:"qwen"`
+	Openrouter bool `json:"openrouter"`
 }
 
 type Query struct {
@@ -1124,16 +1127,17 @@ func (e PromptValidationErrorType) MarshalGQL(w io.Writer) {
 type ProviderType string
 
 const (
-	ProviderTypeOpenai    ProviderType = "openai"
-	ProviderTypeAnthropic ProviderType = "anthropic"
-	ProviderTypeGemini    ProviderType = "gemini"
-	ProviderTypeBedrock   ProviderType = "bedrock"
-	ProviderTypeOllama    ProviderType = "ollama"
-	ProviderTypeCustom    ProviderType = "custom"
-	ProviderTypeDeepseek  ProviderType = "deepseek"
-	ProviderTypeGlm       ProviderType = "glm"
-	ProviderTypeKimi      ProviderType = "kimi"
-	ProviderTypeQwen      ProviderType = "qwen"
+	ProviderTypeOpenai     ProviderType = "openai"
+	ProviderTypeAnthropic  ProviderType = "anthropic"
+	ProviderTypeGemini     ProviderType = "gemini"
+	ProviderTypeBedrock    ProviderType = "bedrock"
+	ProviderTypeOllama     ProviderType = "ollama"
+	ProviderTypeCustom     ProviderType = "custom"
+	ProviderTypeDeepseek   ProviderType = "deepseek"
+	ProviderTypeGlm        ProviderType = "glm"
+	ProviderTypeKimi       ProviderType = "kimi"
+	ProviderTypeQwen       ProviderType = "qwen"
+	ProviderTypeOpenrouter ProviderType = "openrouter"
 )
 
 var AllProviderType = []ProviderType{
@@ -1147,11 +1151,12 @@ var AllProviderType = []ProviderType{
 	ProviderTypeGlm,
 	ProviderTypeKimi,
 	ProviderTypeQwen,
+	ProviderTypeOpenrouter,
 }
 
 func (e ProviderType) IsValid() bool {
 	switch e {
-	case ProviderTypeOpenai, ProviderTypeAnthropic, ProviderTypeGemini, ProviderTypeBedrock, ProviderTypeOllama, ProviderTypeCustom, ProviderTypeDeepseek, ProviderTypeGlm, ProviderTypeKimi, ProviderTypeQwen:
+	case ProviderTypeOpenai, ProviderTypeAnthropic, ProviderTypeGemini, ProviderTypeBedrock, ProviderTypeOllama, ProviderTypeCustom, ProviderTypeDeepseek, ProviderTypeGlm, ProviderTypeKimi, ProviderTypeQwen, ProviderTypeOpenrouter:
 		return true
 	}
 	return false

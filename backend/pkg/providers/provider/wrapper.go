@@ -15,12 +15,14 @@ import (
 
 	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/aws-sdk-go-v2/service/bedrockruntime/types"
+	"github.com/sirupsen/logrus"
 	"github.com/vxcontrol/langchaingo/llms"
 )
 
 const (
-	MaxTooManyRequestsRetries = 10
-	TooManyRequestsRetryDelay = 5 * time.Second
+	MaxTooManyRequestsRetries    = 20
+	TooManyRequestsRetryDelay    = 10 * time.Second
+	MaxTooManyRequestsRetryDelay = 60 * time.Second
 )
 
 type GenerateContentFunc func(
@@ -156,6 +158,7 @@ func WrapGenerateFromSinglePrompt(
 		resp, err = llm.GenerateContent(ctx, []llms.MessageContent{msg}, callOptions...)
 		if err != nil {
 			if isTooManyRequestsError(err) {
+				retryDelay := tooManyRequestsRetryDelay(idx)
 				_, observation = generation.Observation(ctx)
 				observation.Event(
 					langfuse.WithEventName(fmt.Sprintf("%s-generation-error", provider.Type().String())),
@@ -165,10 +168,11 @@ func WrapGenerateFromSinglePrompt(
 					langfuse.WithEventOutput(err.Error()),
 					langfuse.WithEventLevel(langfuse.ObservationLevelWarning),
 				)
+				logTooManyRequestsRetry(ctx, provider, opt, modelWithPrefix, idx, retryDelay, err)
 				select {
 				case <-ctx.Done():
 					return "", ctx.Err()
-				case <-time.After(TooManyRequestsRetryDelay + time.Duration(idx)*time.Second):
+				case <-time.After(retryDelay):
 				}
 				continue
 			}
@@ -276,6 +280,7 @@ func WrapGenerateContent(
 		resp, err = fn(ctx, messages, callOptions...)
 		if err != nil {
 			if isTooManyRequestsError(err) {
+				retryDelay := tooManyRequestsRetryDelay(idx)
 				_, observation = generation.Observation(ctx)
 				observation.Event(
 					langfuse.WithEventName(fmt.Sprintf("%s-generation-error", provider.Type().String())),
@@ -285,10 +290,11 @@ func WrapGenerateContent(
 					langfuse.WithEventOutput(err.Error()),
 					langfuse.WithEventLevel(langfuse.ObservationLevelWarning),
 				)
+				logTooManyRequestsRetry(ctx, provider, opt, modelWithPrefix, idx, retryDelay, err)
 				select {
 				case <-ctx.Done():
 					return nil, ctx.Err()
-				case <-time.After(TooManyRequestsRetryDelay + time.Duration(idx)*time.Second):
+				case <-time.After(retryDelay):
 				}
 				continue
 			}
@@ -374,14 +380,64 @@ func isTooManyRequestsError(err error) bool {
 	}
 
 	errStr := strings.ToLower(err.Error())
-	if strings.Contains(errStr, "statuscode: 429") {
-		return true
+	rateLimitPatterns := []string{
+		"statuscode: 429",
+		"status code: 429",
+		"status: 429",
+		"code: 429",
+		" 429:",
+		"429 too many requests",
+		"too many requests",
+		"toomanyrequests",
+		"rate limit",
+		"rate_limit",
+		"ratelimit",
 	}
-	if strings.Contains(errStr, "toomanyrequests") || strings.Contains(errStr, "too many requests") {
-		return true
+	for _, pattern := range rateLimitPatterns {
+		if strings.Contains(errStr, pattern) {
+			return true
+		}
 	}
 
 	return false
+}
+
+func logTooManyRequestsRetry(
+	ctx context.Context,
+	provider Provider,
+	opt pconfig.ProviderOptionsType,
+	model string,
+	idx int,
+	delay time.Duration,
+	err error,
+) {
+	logrus.WithContext(ctx).WithFields(logrus.Fields{
+		"provider":       provider.Type().String(),
+		"provider_name":  provider.Name().String(),
+		"agent":          opt,
+		"model":          model,
+		"retry_attempt":  idx + 1,
+		"max_retries":    MaxTooManyRequestsRetries,
+		"retry_delay":    delay.String(),
+		"provider_error": truncateLogValue(err.Error(), 500),
+	}).Warn("llm call rate limited; retrying")
+}
+
+func truncateLogValue(value string, maxLen int) string {
+	if maxLen <= 0 || len(value) <= maxLen {
+		return value
+	}
+
+	return value[:maxLen] + "...[truncated]"
+}
+
+func tooManyRequestsRetryDelay(idx int) time.Duration {
+	delay := TooManyRequestsRetryDelay + time.Duration(idx)*5*time.Second
+	if delay > MaxTooManyRequestsRetryDelay {
+		return MaxTooManyRequestsRetryDelay
+	}
+
+	return delay
 }
 
 func getUsageCost(usage float64) *float64 {

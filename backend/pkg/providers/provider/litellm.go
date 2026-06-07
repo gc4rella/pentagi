@@ -17,7 +17,7 @@ import (
 // ApplyModelPrefix adds provider prefix to model name if prefix is not empty.
 // Returns "prefix/modelName" when prefix is set, otherwise returns modelName unchanged.
 func ApplyModelPrefix(modelName, prefix string) string {
-	if prefix == "" {
+	if prefix == "" || strings.HasPrefix(modelName, prefix+"/") {
 		return modelName
 	}
 	return prefix + "/" + modelName

@@ -15,6 +15,7 @@ import GLM from '@/components/icons/glm';
 import Kimi from '@/components/icons/kimi';
 import Ollama from '@/components/icons/ollama';
 import OpenAi from '@/components/icons/open-ai';
+import OpenRouter from '@/components/icons/openrouter';
 import Qwen from '@/components/icons/qwen';
 import ConfirmationDialog from '@/components/shared/confirmation-dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -45,6 +46,7 @@ const providerIcons: Record<ProviderType, React.ComponentType<React.SVGProps<SVG
     [ProviderType.Kimi]: Kimi,
     [ProviderType.Ollama]: Ollama,
     [ProviderType.Openai]: OpenAi,
+    [ProviderType.Openrouter]: OpenRouter,
     [ProviderType.Qwen]: Qwen,
 };
 
@@ -58,6 +60,7 @@ const providerTypes = [
     { label: 'Kimi', type: ProviderType.Kimi },
     { label: 'Ollama', type: ProviderType.Ollama },
     { label: 'OpenAI', type: ProviderType.Openai },
+    { label: 'OpenRouter', type: ProviderType.Openrouter },
     { label: 'Qwen', type: ProviderType.Qwen },
 ];
 
